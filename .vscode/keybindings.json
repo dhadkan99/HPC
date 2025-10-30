@@ -1,0 +1,8 @@
+[
+  {
+    "key": "ctrl+alt+n",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run C Project (Build & Execute)",
+    "when": "editorTextFocus"
+  }
+]

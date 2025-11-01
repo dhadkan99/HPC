@@ -10,17 +10,22 @@
 
 
 
-void swap(int a, int b){
-    int temp = a;
-    printf("before swap %d %d \n", a, b);
-    a = b;
-    b = temp;
-    printf("after swap %d %d \n", a, b);
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 int main() {
-    int x,y;
-    printf("%d %d \n", &x, &y);
-    swap(4, 5);
+    int x = 4;
+    int y = 5;
+
+    printf("Before swap: %d %d\n", x, y);
+
+    swap(&x, &y);
+
+    printf("After swap:  %d %d\n", x, y);
+
     return 0;
 }

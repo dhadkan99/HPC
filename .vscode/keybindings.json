@@ -4,5 +4,12 @@
     "command": "workbench.action.tasks.runTask",
     "args": "Run C Project (Build & Execute)",
     "when": "editorTextFocus"
-  }
+  },
+
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run C Project (Build & Execute)"
+}
+
 ]

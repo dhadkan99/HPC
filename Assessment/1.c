@@ -3,21 +3,27 @@
 #include <string.h>
 #include <pthread.h>
 #include <ctype.h>
+
 #define WORD_LEN 50
 #define MAX_WORDS 10000
+
 char **lines;
 int total_lines = 0;
 int current_line = 0;
+
 char words[MAX_WORDS][WORD_LEN];
 int counts[MAX_WORDS];
 int total_words = 0;
+
 pthread_mutex_t line_mutex;
 pthread_mutex_t word_mutex;
+
 void add_word(char *word)
 {
-pthread_mutex_lock(&word_mutex);
-for (int i = 0; i < total_words; i++) {
-if (strcmp(words[i], word) == 0) {
+    pthread_mutex_lock(&word_mutex);
+
+    for (int i = 0; i < total_words; i++) {
+        if (strcmp(words[i], word) == 0) {
             counts[i]++;
             pthread_mutex_unlock(&word_mutex);
             return;
@@ -62,6 +68,7 @@ void *count_words(void *arg)
     }
     return NULL;
 }
+
 void sort_by_frequency()
 {
     for (int i = 0; i < total_words - 1; i++) {
@@ -96,11 +103,18 @@ int main(int argc, char *argv[])
     int num_threads = atoi(argv[2]);
     pthread_t threads[num_threads];
 
+    printf("Word count program starting...\n");
+    printf("Input file: %s\n", argv[1]);
+    printf("Number of threads: %d\n", num_threads);
+    printf("Output file: result.txt\n\n");
+
     pthread_mutex_init(&line_mutex, NULL);
     pthread_mutex_init(&word_mutex, NULL);
+
     int capacity = 100;
     lines = malloc(capacity * sizeof(char *));
     char buffer[256];
+
     while (fgets(buffer, sizeof(buffer), fp)) {
         if (total_lines == capacity) {
             capacity *= 2;
@@ -109,19 +123,31 @@ int main(int argc, char *argv[])
         lines[total_lines] = strdup(buffer);
         total_lines++;
     }
+
     fclose(fp);
-for (int i = 0; i < num_threads; i++)
+
+    printf("Total lines read: %d\n", total_lines);
+    printf("Starting word counting...\n");
+
+    for (int i = 0; i < num_threads; i++)
         pthread_create(&threads[i], NULL, count_words, NULL);
 
-for (int i = 0; i < num_threads; i++)
-pthread_join(threads[i], NULL);
-sort_by_frequency();
-FILE *out = fopen("result.txt", "w");
+    for (int i = 0; i < num_threads; i++)
+        pthread_join(threads[i], NULL);
+
+    printf("Word counting finished\n");
+    printf("Sorting results...\n");
+
+    sort_by_frequency();
+
+    FILE *out = fopen("result.txt", "w");
     for (int i = 0; i < total_words; i++)
         fprintf(out, "%s : %d\n", words[i], counts[i]);
     fclose(out);
 
-    printf("Word counting completed. Check result.txt\n");
+    printf("Processing completed\n");
+    printf("Total unique words: %d\n", total_words);
+    printf("Results written to result.txt\n");
+
     return 0;
 }
-

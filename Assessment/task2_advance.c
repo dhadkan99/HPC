@@ -111,23 +111,36 @@ int main(int argc, char *argv[]) {
     }
 
     int threads = atoi(argv[2]);
-    FILE *out = fopen("Task2_Matrices_12.txt", "w");
+    FILE *out = fopen("Task2_MatData_6.txt", "w");
+
+   
+    printf("Matrix operations program starting...\n");
+    printf("Input file: %s\n", argv[1]);
+    printf("Number of threads: %d\n", threads);
+    printf("Output file: Task2_Matrices_12.txt\n\n");
+    
 
     int pair = 1;
 
     while (1) {
         int r1, c1, r2, c2;
         if (fscanf(in, "%d,%d", &r1, &c1) != 2) break;
+
         double **A = allocMatrix(r1, c1);
         for (int i = 0; i < r1; i++)
             for (int j = 0; j < c1; j++)
                 fscanf(in, "%lf,", &A[i][j]);
 
         if (fscanf(in, "%d,%d", &r2, &c2) != 2) break;
+
         double **B = allocMatrix(r2, c2);
         for (int i = 0; i < r2; i++)
             for (int j = 0; j < c2; j++)
                 fscanf(in, "%lf,", &B[i][j]);
+
+       
+        printf("Processing matrix pair %d...\n", pair);
+       
 
         fprintf(out, "\n===============================\n");
         fprintf(out, "MATRIX PAIR %d\n", pair++);
@@ -181,6 +194,11 @@ int main(int argc, char *argv[]) {
         freeMatrix(A, r1);
         freeMatrix(B, r2);
     }
+
+   
+    printf("\nProcessing completed. %d matrix pairs processed.\n", pair - 1);
+    printf("Results written to Task2_Matrices_12.txt\n");
+ 
 
     fclose(in);
     fclose(out);

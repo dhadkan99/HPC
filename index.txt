@@ -1,9 +1,0 @@
-Feature             | Mutex                                 | Semaphore
---------------------|---------------------------------------|------------------------------------
-Headerfile          | #include <pthread.h>                  | #include <semaphore.h>
-Variable declare    | pthread_mutex_t varname;              | sem_t varname;
-Lock (Wait)         | pthread_mutex_lock(void *varname);    | sem_wait(void *varname);
-Unlock (Signal/Post)| pthread_mutex_unlock(void *varname);  | sem_post(void *varname);
-Initialization      | pthread_mutex_init(void *varname,     | sem_init(void *varname,
-                    |     mutex_arg);                       |     no_of_processes, no_of_resouces);
-Destroy (free)      | pthread_mutex_destroy(void *varname); | sem_destroy(void *varname);
